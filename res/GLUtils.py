@@ -25,7 +25,8 @@ class GLUtils:
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
-    def DrawLine(points, size):
+    @staticmethod
+    def DrawLine(lines, size):
         glPointSize(size)
         """
          Aqui indicamos que queremos dibujar lineas, tambien podemos usar
@@ -33,10 +34,13 @@ class GLUtils:
          Ver mas informacion:
          https://learn.microsoft.com/es-es/windows/win32/opengl/glbegin
         """
-        glBegin(GL_LINE_STRIP)
-        for point in points:
-            glVertex2f(point.x, point.y)
-        glEnd()
+        for line in lines:
+            glBegin(GL_LINE_STRIP)
+            
+            for point in line.points:
+                glVertex2f(point.x, point.y)
+            
+            glEnd()
 
     @staticmethod
     def DrawPoint(points, size):
