@@ -34,7 +34,8 @@ class GLApp(App):
 
     def Render(self):
         GLUtils.PrepareRender()
-        GLUtils.DrawPoint(self.points, 5)
+        GLUtils.DrawPoint(self.points, 5) # Asi podemos ver los puntos de la lineas
+        GLUtils.DrawLine(self.points, 5)
 
         
 

@@ -25,6 +25,19 @@ class GLUtils:
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
 
+    def DrawLine(points, size):
+        glPointSize(size)
+        """
+         Aqui indicamos que queremos dibujar lineas, tambien podemos usar
+         otra opcion, GL_LINE_LOOP
+         Ver mas informacion:
+         https://learn.microsoft.com/es-es/windows/win32/opengl/glbegin
+        """
+        glBegin(GL_LINE_STRIP)
+        for point in points:
+            glVertex2f(point.x, point.y)
+        glEnd()
+
     @staticmethod
     def DrawPoint(points, size):
         # Configuramos el radio de los puntos
