@@ -1,5 +1,6 @@
 from OpenGL.GL import *
 from OpenGL.GLU import *
+import json
 
 # Aqui tendremos funciones para reusarlas
 class GLUtils:
@@ -24,6 +25,23 @@ class GLUtils:
         # Inicializamos la matriz GL_MODELVIEW
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
+
+    @staticmethod
+    def DrawLine(lines, size):
+        glPointSize(size)
+        """
+         Aqui indicamos que queremos dibujar lineas, tambien podemos usar
+         otra opcion, GL_LINE_LOOP
+         Ver mas informacion:
+         https://learn.microsoft.com/es-es/windows/win32/opengl/glbegin
+        """
+        for line in lines:
+            glBegin(GL_LINE_STRIP)
+            
+            for point in line.points:
+                glVertex2f(point.x, point.y)
+            
+            glEnd()
 
     @staticmethod
     def DrawPoint(points, size):

@@ -5,14 +5,20 @@ sys.path.append('..')   # Nos movemos un direcctorio arriba
 from res.App import App
 from res.GLUtils import *
 from res.Point import Point
+from res.Line import Line
 from OpenGL.GL import *
 from OpenGL.GLU import *
+import json
 
 
 class GLApp(App):
+
+    
     def Init(self):
         self.ortoWidth, self.ortoHeight = 1, 1
-        self.points = []
+        self.currentLine = None
+        self.lines = []
+        self.mouseDown = False
 
     def Setup(self):
         # Los vectores suelen venir normalizados entre -1 y 1
@@ -22,19 +28,42 @@ class GLApp(App):
 
     def Inputs(self):
         for event in self.events:
-            if event.type == pg.MOUSEBUTTONDOWN:
-                x, y = pg.mouse.get_pos()
+            # Si pulsamos la G guardamos el dibujo
+            if event.type == pg.KEYDOWN:
+                # Manegamos las teclas pulsadas
+                if event.key == pg.K_g:
+                    self.WriteFiles()
+                # Si pulsamos la C cargamos el dibujo
+                elif event.key == pg.K_c:
+                    self.ReadFile()
+                elif event.key == pg.K_SPACE:
+                    self.lines.clear()
+            
+            elif event.type == pg.MOUSEBUTTONDOWN:
+                self.mouseDown = True
 
+                # Cuando apretemos el boton del raton creamos una nueva linea
+                self.currentLine = Line()
+
+                # Guardamos la linea en nuestro array de lineas
+                self.lines.append(self.currentLine)
+
+            elif event.type == pg.MOUSEBUTTONUP:
+                self.mouseDown = False
+            elif event.type == pg.MOUSEMOTION and self.mouseDown:
+                x, y = pg.mouse.get_pos()
+                
+                currPoint = Point(GLUtils.MapValue(0, self.anchoPatalla, 0, self.ortoWidth, x),
+                            GLUtils.MapValue(0, self.altoPantalla, 0, self.ortoHeight, y))
+                
                 # Pasamos los puntos normalizados
-                self.points.append(
-                    Point(GLUtils.MapValue(0, self.anchoPatalla, 0, self.ortoWidth, x),
-                          GLUtils.MapValue(0, self.altoPantalla, 0, self.ortoHeight, y))
-                )
+                self.currentLine.points.append(currPoint)
                 #print(x, y)
 
     def Render(self):
         GLUtils.PrepareRender()
-        GLUtils.DrawPoint(self.points, 5)
+        #GLUtils.DrawPoint(self.points, 5) # Asi podemos ver los puntos de la lineas
+        GLUtils.DrawLine(self.lines, 1)
 
         
 

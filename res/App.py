@@ -1,6 +1,9 @@
 import sys
 import pygame as pg
 from pygame.locals import *
+from res.Point import Point
+from res.Line import Line
+import json
 
 class App:
     def __init__(self, titulo, ancho, alto, maxFPS):
@@ -48,3 +51,38 @@ class App:
 
     def Render(self):
         pass
+
+    def ReadFile(self):
+        with open('lines.json', 'r') as file:
+            # Cargamos los datos
+            data = json.load(file)
+            for dataLine in data:
+                # Por cada linea creamos un objeto linea
+                line = Line()
+                for point in dataLine:
+                    # Cojemos los puntos del archivo y los cargamos
+                    # en la nueva linea
+                    line.points.append(Point(point[0], point[1]))
+                # Guardamos las lineas creadas en el array de lineas
+                self.lines.append(line)
+        print("Fichero cargado correctamente")
+
+
+    def WriteFiles(self):
+        data = []
+        # Vamos a crear el json
+        for line in self.lines:
+            # Aqui vamos a guardar los puntos
+            points = []
+            for point in line.points:
+                
+                # No podemos guardar directamente el point ya que 
+                # es un objeto, por lo que guardaremos cojuntamente
+                # la posicion X e Y
+                points.append([point.x, point.y])
+
+            data.append(points)
+        # Guardamos los datos en el json
+        with open('lines.json', 'w') as file:
+            json.dump(data, file)
+        print("Fichero guardado correctamente")
