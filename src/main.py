@@ -30,11 +30,14 @@ class GLApp(App):
         for event in self.events:
             # Si pulsamos la G guardamos el dibujo
             if event.type == pg.KEYDOWN:
+                # Manegamos las teclas pulsadas
                 if event.key == pg.K_g:
                     self.WriteFiles()
                 # Si pulsamos la C cargamos el dibujo
                 elif event.key == pg.K_c:
                     self.ReadFile()
+                elif event.key == pg.K_SPACE:
+                    self.lines.clear()
             
             elif event.type == pg.MOUSEBUTTONDOWN:
                 self.mouseDown = True
