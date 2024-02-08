@@ -8,9 +8,12 @@ from res.Point import Point
 from res.Line import Line
 from OpenGL.GL import *
 from OpenGL.GLU import *
+import json
 
 
 class GLApp(App):
+
+    
     def Init(self):
         self.ortoWidth, self.ortoHeight = 1, 1
         self.currentLine = None
@@ -25,7 +28,15 @@ class GLApp(App):
 
     def Inputs(self):
         for event in self.events:
-            if event.type == pg.MOUSEBUTTONDOWN:
+            # Si pulsamos la G guardamos el dibujo
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_g:
+                    self.WriteFiles()
+                # Si pulsamos la C cargamos el dibujo
+                elif event.key == pg.K_c:
+                    self.ReadFile()
+            
+            elif event.type == pg.MOUSEBUTTONDOWN:
                 self.mouseDown = True
 
                 # Cuando apretemos el boton del raton creamos una nueva linea
